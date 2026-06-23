@@ -1,3 +1,4 @@
+// ==================== PRODUCTOS ====================
 const products = [
     { id: 1, name: "iPhone 16 Pro", price: 1299, category: "smartphone", image: "https://picsum.photos/id/20/400/300", rating: 4.9 },
     { id: 2, name: "MacBook Air M3", price: 1299, category: "laptop", image: "https://picsum.photos/id/201/400/300", rating: 4.8 },
@@ -6,22 +7,28 @@ const products = [
     { id: 5, name: "Samsung Galaxy S25", price: 899, category: "smartphone", image: "https://picsum.photos/id/60/400/300", rating: 4.8 },
     { id: 6, name: "Dell XPS 14", price: 1499, category: "laptop", image: "https://picsum.photos/id/201/400/300", rating: 4.5 },
     { id: 7, name: "AirPods Max", price: 549, category: "audio", image: "https://picsum.photos/id/180/400/300", rating: 4.4 },
-    { id: 8, name: "LG OLED 55\"", price: 1199, category: "tv", image: "https://picsum.photos/id/251/400/300", rating: 4.9 }
+    { id: 8, name: "LG OLED 55\"", price: 1199, category: "tv", image: "https://picsum.photos/id/251/400/300", rating: 4.9 },
+    { id: 9, name: "Google Pixel 9", price: 799, category: "smartphone", image: "https://picsum.photos/id/1015/400/300", rating: 4.6 },
+    { id: 10, name: "Sony A7 IV Cámara", price: 2499, category: "audio", image: "https://picsum.photos/id/133/400/300", rating: 4.8 },
+    { id: 11, name: "HP Pavilion Gaming", price: 899, category: "laptop", image: "https://picsum.photos/id/201/400/300", rating: 4.3 },
+    { id: 12, name: "TCL 75\" 4K Smart TV", price: 699, category: "tv", image: "https://picsum.photos/id/251/400/300", rating: 4.5 }
 ];
 
 let cart = JSON.parse(localStorage.getItem('phostech-cart')) || [];
+let isDarkMode = localStorage.getItem('darkMode') === 'true';
 
+// ==================== FUNCIONES ====================
 function renderProducts(filteredProducts) {
     const container = document.getElementById('products-grid');
     container.innerHTML = '';
 
     filteredProducts.forEach(product => {
         const card = document.createElement('div');
-        card.className = 'product-card bg-white rounded-3xl overflow-hidden border border-gray-100';
+        card.className = 'product-card bg-white dark:bg-gray-800 rounded-3xl overflow-hidden border border-gray-100 dark:border-gray-700';
         card.innerHTML = `
             <div class="relative">
                 <img src="\( {product.image}" alt=" \){product.name}" class="w-full h-56 object-cover">
-                <div class="absolute top-4 right-4 bg-white/95 backdrop-blur px-4 py-1.5 rounded-2xl text-lg font-bold shadow">
+                <div class="absolute top-4 right-4 bg-white/95 dark:bg-gray-900 px-4 py-1.5 rounded-2xl text-lg font-bold shadow">
                     \[ {product.price}
                 </div>
             </div>
@@ -44,8 +51,11 @@ function addToCart(id) {
     if (!product) return;
 
     const existing = cart.find(item => item.id === id);
-    if (existing) existing.quantity += 1;
-    else cart.push({ ...product, quantity: 1 });
+    if (existing) {
+        existing.quantity += 1;
+    } else {
+        cart.push({ ...product, quantity: 1 });
+    }
 
     localStorage.setItem('phostech-cart', JSON.stringify(cart));
     updateCartCount();
@@ -123,7 +133,6 @@ function filterCategory(category) {
     document.querySelectorAll('.category-btn').forEach(btn => {
         btn.classList.toggle('active', (category === 'all' && btn.textContent === 'Todos') || btn.textContent.toLowerCase() === category);
     });
-
     let filtered = category === 'all' ? products : products.filter(p => p.category === category);
     renderProducts(filtered);
 }
@@ -136,13 +145,43 @@ function showLogin() {
     alert('🔑 Inicio de sesión simulado');
 }
 
-// Inicialización
+function toggleDarkMode() {
+    const isDark = document.documentElement.classList.toggle('dark');
+    localStorage.setItem('darkMode', isDark);
+    document.getElementById('theme-icon').classList.toggle('fa-moon', !isDark);
+    document.getElementById('theme-icon').classList.toggle('fa-sun', isDark);
+}
+
+// ==================== INICIALIZACIÓN ====================
 document.addEventListener('DOMContentLoaded', () => {
     renderProducts(products);
     updateCartCount();
 
+    // Modo oscuro inicial
+    if (localStorage.getItem('darkMode') === 'true') {
+        document.documentElement.classList.add('dark');
+        document.getElementById('theme-icon').classList.remove('fa-moon');
+        document.getElementById('theme-icon').classList.add('fa-sun');
+    }
+
+    // Botón carrito
     document.getElementById('cart-btn').addEventListener('click', toggleCart);
 
+    // Búsqueda
+    document.getElementById('search-input').addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase();
+        const filtered = products.filter(p => p.name.toLowerCase().includes(term));
+        renderProducts(filtered);
+    });
+
+    // Formulario de contacto
+    document.getElementById('contact-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert('✅ ¡Mensaje recibido! Gracias por contactarnos. Te responderemos pronto.');
+        e.target.reset();
+    });
+
+    // Navegación
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
@@ -152,6 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// Funciones globales
 window.addToCart = addToCart;
 window.removeFromCart = removeFromCart;
 window.toggleCart = toggleCart;
@@ -159,3 +199,4 @@ window.checkout = checkout;
 window.filterCategory = filterCategory;
 window.navigateToSection = navigateToSection;
 window.showLogin = showLogin;
+window.toggleDarkMode = toggleDarkMode;
