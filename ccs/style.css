@@ -22,3 +22,9 @@
     background-color: #d97706;
     color: white;
 }
+
+/* Modo Oscuro */
+.dark .product-card {
+    background-color: #1f2937;
+    border-color: #374151;
+}
