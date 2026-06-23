@@ -1,0 +1,24 @@
+.hero-bg {
+    background-image: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), 
+                      url('https://picsum.photos/id/1015/1920/1080');
+    background-size: cover;
+    background-position: center;
+}
+
+.product-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.product-card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.15);
+}
+
+.category-btn {
+    transition: all 0.2s;
+}
+
+.category-btn.active {
+    background-color: #d97706;
+    color: white;
+}
