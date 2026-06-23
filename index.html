@@ -8,26 +8,29 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="bg-gray-50 font-sans">
-
+<body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+    
     <!-- Navbar -->
-    <nav class="bg-white shadow-md sticky top-0 z-50">
+    <nav class="bg-white dark:bg-gray-900 shadow-md sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-6">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center gap-3">
                     <i class="fas fa-lightbulb text-3xl text-amber-500"></i>
-                    <span class="text-2xl font-bold text-gray-900">PHOS TECH</span>
+                    <span class="text-2xl font-bold">PHOS TECH</span>
                 </div>
                 
                 <div class="hidden md:flex items-center gap-8">
-                    <a href="#" class="nav-link text-gray-700 hover:text-amber-600 font-medium" data-section="home">Inicio</a>
-                    <a href="#" class="nav-link text-gray-700 hover:text-amber-600 font-medium" data-section="products">Productos</a>
-                    <a href="#" class="nav-link text-gray-700 hover:text-amber-600 font-medium" data-section="about">Nosotros</a>
-                    <a href="#" class="nav-link text-gray-700 hover:text-amber-600 font-medium" data-section="contact">Contacto</a>
+                    <a href="#" class="nav-link hover:text-amber-600 font-medium" data-section="home">Inicio</a>
+                    <a href="#" class="nav-link hover:text-amber-600 font-medium" data-section="products">Productos</a>
+                    <a href="#" class="nav-link hover:text-amber-600 font-medium" data-section="about">Nosotros</a>
+                    <a href="#" class="nav-link hover:text-amber-600 font-medium" data-section="contact">Contacto</a>
                 </div>
 
                 <div class="flex items-center gap-4">
-                    <button id="cart-btn" class="relative p-2 hover:bg-gray-100 rounded-full transition">
+                    <button onclick="toggleDarkMode()" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition">
+                        <i id="theme-icon" class="fas fa-moon text-xl"></i>
+                    </button>
+                    <button id="cart-btn" class="relative p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition">
                         <i class="fas fa-shopping-cart text-xl"></i>
                         <span id="cart-count" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">0</span>
                     </button>
@@ -44,8 +47,8 @@
         <div class="max-w-7xl mx-auto px-6 text-center">
             <h1 class="text-6xl md:text-7xl font-bold mb-6">PHOS TECH</h1>
             <p class="text-3xl md:text-4xl font-medium mb-4">"En tu luz veremos la luz"</p>
-            <p class="text-xl mb-10 max-w-2xl mx-auto">Salmos 36:9</p>
-            <p class="text-2xl mb-12 max-w-2xl mx-auto">Bienes de Consumo Electrónico para Usted</p>
+            <p class="text-xl mb-10">Salmos 36:9</p>
+            <p class="text-2xl mb-12">Bienes de Consumo Electrónico para Usted</p>
             <button onclick="navigateToSection('products')" 
                     class="px-10 py-5 bg-white text-gray-900 text-xl font-semibold rounded-2xl hover:bg-gray-100 transition">
                 Explorar Catálogo
@@ -55,21 +58,34 @@
 
     <!-- Products -->
     <section id="products" class="max-w-7xl mx-auto px-6 py-16">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-4">
-            <div>
-                <h2 class="text-4xl font-bold text-gray-900">Productos Destacados</h2>
-                <p class="text-gray-600 mt-2">Tecnología con propósito</p>
-            </div>
-            <div class="flex flex-wrap gap-3">
-                <button onclick="filterCategory('all')" class="category-btn active px-5 py-2 rounded-xl font-medium">Todos</button>
-                <button onclick="filterCategory('smartphone')" class="category-btn px-5 py-2 rounded-xl font-medium">Smartphones</button>
-                <button onclick="filterCategory('laptop')" class="category-btn px-5 py-2 rounded-xl font-medium">Laptops</button>
-                <button onclick="filterCategory('audio')" class="category-btn px-5 py-2 rounded-xl font-medium">Audio</button>
-                <button onclick="filterCategory('tv')" class="category-btn px-5 py-2 rounded-xl font-medium">TV</button>
+        <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+            <h2 class="text-4xl font-bold">Productos Destacados</h2>
+            <div class="relative w-full md:w-96">
+                <input type="text" id="search-input" 
+                       placeholder="Buscar productos..." 
+                       class="w-full px-5 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-2xl focus:outline-none focus:border-amber-500">
             </div>
         </div>
-
         <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"></div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="max-w-7xl mx-auto px-6 py-20 bg-white dark:bg-gray-900">
+        <h2 class="text-4xl font-bold text-center mb-12">Contáctanos</h2>
+        <div class="max-w-2xl mx-auto">
+            <form id="contact-form" class="space-y-6">
+                <input type="text" id="name" placeholder="Tu nombre" required 
+                       class="w-full px-6 py-4 border border-gray-300 dark:border-gray-700 rounded-2xl dark:bg-gray-800 focus:outline-none">
+                <input type="email" id="email" placeholder="Tu correo electrónico" required 
+                       class="w-full px-6 py-4 border border-gray-300 dark:border-gray-700 rounded-2xl dark:bg-gray-800 focus:outline-none">
+                <textarea id="message" rows="5" placeholder="Escribe tu mensaje aquí..." required 
+                          class="w-full px-6 py-4 border border-gray-300 dark:border-gray-700 rounded-2xl dark:bg-gray-800 focus:outline-none"></textarea>
+                <button type="submit" 
+                        class="w-full py-5 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-2xl transition">
+                    Enviar Mensaje
+                </button>
+            </form>
+        </div>
     </section>
 
     <!-- About -->
@@ -118,7 +134,7 @@
 
     <!-- Cart Modal -->
     <div id="cart-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[100]">
-        <div class="bg-white w-full max-w-lg mx-4 rounded-3xl max-h-[90vh] flex flex-col">
+        <div class="bg-white dark:bg-gray-900 w-full max-w-lg mx-4 rounded-3xl max-h-[90vh] flex flex-col">
             <div class="p-6 border-b flex justify-between items-center">
                 <h2 class="text-2xl font-bold">Tu Carrito</h2>
                 <button onclick="toggleCart()" class="text-4xl leading-none text-gray-400 hover:text-gray-600">&times;</button>
@@ -129,7 +145,7 @@
                     <span>Total:</span>
                     <span id="cart-total">$0</span>
                 </div>
-                <button onclick="checkout()" class="w-full py-5 bg-amber-600 hover:bg-amber-700 text-white text-lg font-semibold rounded-2xl transition">
+                <button onclick="checkout()" class="w-full py-5 bg-green-600 hover:bg-green-700 text-white text-lg font-semibold rounded-2xl transition">
                     Proceder al Pago
                 </button>
             </div>
